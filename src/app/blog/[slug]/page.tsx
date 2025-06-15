@@ -1,6 +1,6 @@
 import React from "react";
-import { getStoryblokApi, StoryblokStory } from "@storyblok/react/rsc";
-
+import { getStoryblokApi } from "@storyblok/react/rsc";
+import Blog from "@/components/Blog";
 const fetchBlogPage = async (slug: string) => {
   const client = getStoryblokApi();
   const response = await client.getStory(`blog/${slug}`, {
@@ -10,10 +10,10 @@ const fetchBlogPage = async (slug: string) => {
 };
 
 const BlogPagePage = async (props: any) => {
-  const blok = await fetchBlogPage(props.params.slug);
-  console.log("Blog Page Data:", blok);
+  const story = await fetchBlogPage(props.params.slug);
+  // console.log("Blog Page Data:", story);
 
-  return <StoryblokStory story={blok} />;
+  return <Blog blok={story.content} createdAt={story.created_at} />;
 };
 
 export default BlogPagePage;
