@@ -21,8 +21,17 @@ const fetchAllBlogs = async () => {
 };
 
 const BlogPage = async () => {
-  const blok = await fetchBlogsPage();
+  // const blok = await fetchBlogsPage();
   const blogs = await fetchAllBlogs();
+
+  const formatImageUrl = (url: string) => {
+    if (!url) return "";
+    if (url.startsWith("//")) return `https:${url}`;
+    if (!url.startsWith("http")) return `https://${url}`;
+    return url;
+  };
+
+  console.log("Blogs Data:", blogs);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -39,7 +48,7 @@ const BlogPage = async () => {
                 {/* Blog Image */}
                 {blog.content?.image?.filename && (
                   <img
-                    src={blog.content.image.filename}
+                    src={formatImageUrl(blog.content.image.filename)}
                     alt={blog.content.image.alt || blog.name}
                     className="w-full h-48 object-cover"
                   />

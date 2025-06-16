@@ -7,6 +7,8 @@ import Blog from "@/components/Blog";
 import Page from "@/components/Page";
 import Link from "next/link";
 import BackButton from "@/utils/back";
+import SubmissionForm from "@/components/SubmissionForm";
+import Nav from "@/components/Nav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -54,13 +56,10 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#B4869F]`}
         >
           <header>
-            <nav className="flex justify-between items-center p-4 bg-[#F2E9E4]">
-              <Link href={"/"}>Home</Link>
-              <Link href={"/blog"}>Blogs</Link>
-              <Link href={"/"}>Create</Link>
-            </nav>
+            <Nav />
             <BackButton />
           </header>
+
           {children}
         </body>
       </html>
