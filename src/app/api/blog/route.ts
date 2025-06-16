@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
+import FormData from "form-data";
 
 export const config = {
   api: {
@@ -15,7 +16,10 @@ export async function POST(request: Request) {
 
     if (!spaceId || !oauthToken) {
       return NextResponse.json(
-        { success: false, error: "Missing Storyblok credentials" },
+        {
+          success: false,
+          error: "Server configuration error - please contact support",
+        },
         { status: 500 }
       );
     }
@@ -26,51 +30,28 @@ export async function POST(request: Request) {
     const author = formData.get("author")?.toString() || "";
     const image = formData.get("image") as File | null;
 
-    if (!image) {
+    // Validation
+    if (!title || !description || !author || !image) {
       return NextResponse.json(
-        { success: false, error: "Image is required" },
+        { success: false, error: "All fields are required" },
         { status: 400 }
       );
     }
 
-    // Validate image
-    const allowedMimeTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/gif",
-      "image/webp",
-    ];
-    if (!allowedMimeTypes.includes(image.type)) {
+    if (image.size > 3 * 1024 * 1024) {
       return NextResponse.json(
-        {
-          success: false,
-          error: "Incorrect format",
-          details: {
-            filename: ["Only JPEG, PNG, GIF, and WebP formats are allowed"],
-          },
-        },
-        { status: 422 }
+        { success: false, error: "Image size must be less than 3MB" },
+        { status: 400 }
       );
     }
 
-    if (!image.name || !image.name.trim()) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Invalid filename",
-          details: { filename: ["Image must have a valid filename"] },
-        },
-        { status: 422 }
-      );
-    }
-
-    // Step 1: Request Signed Response
-    const signedRes = await axios.post(
-      `https://mapi.storyblok.com/v1/spaces/${spaceId}/assets/`,
+    console.log("Signing asset upload request...");
+    const signResponse = await axios.post(
+      `https://api.storyblok.com/v1/spaces/${spaceId}/assets`,
       {
         filename: image.name,
-        size: image.size.toString(),
-        validate_upload: 1,
+        size: null,
+        asset_folder_id: null,
       },
       {
         headers: {
@@ -80,34 +61,57 @@ export async function POST(request: Request) {
       }
     );
 
-    const { fields, post_url, id } = signedRes.data;
+    const signedRequest = signResponse.data;
 
-    // Step 2: Upload the file to the signed post_url
+    console.log("Uploading file to signed URL...");
     const uploadForm = new FormData();
-    for (const key in fields) {
-      uploadForm.append(key, fields[key]);
+
+    // Add all fields from the signed request
+    for (const key in signedRequest.fields) {
+      uploadForm.append(key, signedRequest.fields[key]);
     }
-    uploadForm.append("file", image); // Use original file
 
-    const uploadResponse = await axios.post(post_url, uploadForm);
-    console.log("Upload response:", uploadResponse.data);
+    // Convert the File to a Buffer and append to form
+    const imageBuffer = await image.arrayBuffer();
+    uploadForm.append("file", Buffer.from(imageBuffer), image.name);
 
-    // Step 3: Finalize upload
-    await axios.get(
-      `https://mapi.storyblok.com/v1/spaces/${spaceId}/assets/${id}/finish_upload`,
+    // Calculate content length
+    const contentLength = await new Promise<number>((resolve, reject) => {
+      uploadForm.getLength((err, length) => {
+        if (err) reject(err);
+        else resolve(length);
+      });
+    });
+
+    // Upload the file
+    const uploadResponse = await axios.post(
+      signedRequest.post_url,
+      uploadForm,
       {
-        headers: { Authorization: oauthToken },
+        headers: {
+          ...uploadForm.getHeaders(),
+          "Content-Length": contentLength.toString(),
+        },
+        maxContentLength: Infinity,
+        maxBodyLength: Infinity,
       }
     );
 
-    // Final image URL
-    const imageUrl = `https://a.storyblok.com/${fields.key}`;
+    if (uploadResponse.status !== 204) {
+      throw new Error(
+        "File upload failed with status: " + uploadResponse.status
+      );
+    }
 
-    // Create story
+    const fileUrl = `https://a.storyblok.com/${signedRequest.fields.key}`;
+    console.log("File uploaded successfully:", fileUrl);
+
+    // Create the story in Storyblok
     const storyData = {
       story: {
         name: title,
         slug: title.toLowerCase().replace(/\s+/g, "-"),
+        parent_id: 687846830,
         content: {
           component: "blog",
           title,
@@ -127,7 +131,7 @@ export async function POST(request: Request) {
           },
           author,
           image: {
-            id,
+            id: signedRequest.id,
             alt: title,
             name: image.name,
             focus: "",
@@ -135,17 +139,13 @@ export async function POST(request: Request) {
             source: "",
             copyright: "",
             fieldtype: "asset",
-            filename: imageUrl,
-            meta_data: {
-              alt: title,
-              title: title,
-              source: "",
-            },
+            filename: fileUrl,
           },
         },
       },
     };
 
+    console.log("Creating story in Storyblok...");
     const storyResponse = await axios.post(
       `https://mapi.storyblok.com/v1/spaces/${spaceId}/stories/`,
       storyData,
@@ -159,17 +159,33 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      message: "Story created successfully",
-      storyId: storyResponse.data.story.id,
-      assetId: id,
+      message: "Blog post created successfully!",
+      storyId: storyResponse.data?.story?.id,
+      assetId: signedRequest.id,
+      imageUrl: fileUrl,
     });
   } catch (error: any) {
-    console.error("Upload error:", error.response?.data || error.message);
+    console.error("Error processing request:", error);
+
+    let errorMessage = "Failed to create blog post";
+    if (error.response) {
+      console.error("Response data:", error.response.data);
+      console.error("Response status:", error.response.status);
+      errorMessage =
+        error.response.data?.message ||
+        error.response.data?.error ||
+        errorMessage;
+    } else if (error.request) {
+      console.error("No response received:", error.request);
+    } else {
+      console.error("Error message:", error.message);
+    }
+
     return NextResponse.json(
       {
         success: false,
-        error: error.response?.data?.message || "Upload failed",
-        details: error.response?.data || {},
+        error: errorMessage,
+        details: error.response?.data || undefined,
       },
       { status: error.response?.status || 500 }
     );

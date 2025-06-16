@@ -3,14 +3,6 @@ export const dynamic = "force-dynamic";
 import React from "react";
 import { getStoryblokApi } from "@storyblok/react/rsc";
 
-const fetchBlogsPage = async () => {
-  const client = getStoryblokApi();
-  const response = await client.getStory(`blog`, {
-    version: "draft",
-  });
-  return response.data.story;
-};
-
 const fetchAllBlogs = async () => {
   const client = getStoryblokApi();
   const response = await client.getStories({
@@ -23,15 +15,7 @@ const fetchAllBlogs = async () => {
 const BlogPage = async () => {
   // const blok = await fetchBlogsPage();
   const blogs = await fetchAllBlogs();
-
-  const formatImageUrl = (url: string) => {
-    if (!url) return "";
-    if (url.startsWith("//")) return `https:${url}`;
-    if (!url.startsWith("http")) return `https://${url}`;
-    return url;
-  };
-
-  console.log("Blogs Data:", blogs);
+  // console.log("All Blogs Data:", blogs);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -48,7 +32,7 @@ const BlogPage = async () => {
                 {/* Blog Image */}
                 {blog.content?.image?.filename && (
                   <img
-                    src={formatImageUrl(blog.content.image.filename)}
+                    src={blog.content.image.filename}
                     alt={blog.content.image.alt || blog.name}
                     className="w-full h-48 object-cover"
                   />
