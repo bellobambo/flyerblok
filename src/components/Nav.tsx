@@ -40,13 +40,16 @@ const Nav = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="bg-white p-6 rounded-lg max-w-md w-full shadow-lg"
+              className="bg-[#F2E9E4] p-6 rounded-lg max-w-md w-full shadow-lg"
             >
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold">Create New Blog Post</h2>
+              <div className="flex justify-between items-center mb-4  border-b-[#b4869f] p-2 rounded-md shadow-lg">
+                <h2 className="text-xl font-semibold text-[#ae7796]">
+                  {" "}
+                  <em>New Flyer</em>
+                </h2>
                 <button
                   onClick={() => setShowModal(false)}
-                  className="text-gray-500 hover:text-gray-700 text-2xl leading-none"
+                  className="text-[#b4869f] cursor-pointer hover:text-[#b4869f] text-2xl leading-none"
                 >
                   &times;
                 </button>

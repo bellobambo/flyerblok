@@ -107,7 +107,10 @@ export default function SubmissionForm({
       animate="visible"
     >
       <motion.div custom={0} variants={itemVariant}>
-        <label htmlFor="title" className="block mb-1 font-medium">
+        <label
+          htmlFor="title"
+          className=" block mb-1 font-normal text-[#ae7796] font-mono"
+        >
           Title
         </label>
         <input
@@ -117,12 +120,15 @@ export default function SubmissionForm({
           value={formData.title}
           onChange={handleChange}
           required
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded focus:ring-2 focus:ring-[#ae7796] outline-none"
         />
       </motion.div>
 
       <motion.div custom={1} variants={itemVariant}>
-        <label htmlFor="description" className="block mb-1 font-medium">
+        <label
+          htmlFor="description"
+          className="block mb-1 font-normal text-[#ae7796] font-mono"
+        >
           Description
         </label>
         <textarea
@@ -131,26 +137,37 @@ export default function SubmissionForm({
           value={formData.description}
           onChange={handleChange}
           required
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded focus:ring-2 focus:ring-[#ae7796] outline-none"
           rows={4}
         />
       </motion.div>
 
       <motion.div custom={2} variants={itemVariant}>
-        <label htmlFor="image" className="block mb-1 font-medium">
-          Featured Image (max 3MB, optional)
-        </label>
-        <input
-          type="file"
-          id="image"
-          accept="image/*"
-          onChange={handleImageUpload}
-          className="w-full p-2 border rounded"
-        />
+        <span className="block mb-1 font-normal text-[#ae7796] font-mono">
+          Photo <small> (max 3MB, optional)</small>
+        </span>
+        <div className="w-full">
+          <label
+            htmlFor="image"
+            className="block w-full p-2 text-center cursor-pointer text-[#ae7796] rounded hover:text-white border-2 border-[#ae7796] hover:bg-[#9e667f] transition"
+          >
+            Upload Image
+          </label>
+          <input
+            type="file"
+            id="image"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="hidden"
+          />
+        </div>
       </motion.div>
 
       <motion.div custom={3} variants={itemVariant}>
-        <label htmlFor="author" className="block mb-1 font-medium">
+        <label
+          htmlFor="author"
+          className="block mb-1 font-normal text-[#ae7796] font-mono"
+        >
           Author
         </label>
         <input
@@ -160,7 +177,7 @@ export default function SubmissionForm({
           value={formData.author}
           onChange={handleChange}
           required
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded focus:ring-2 focus:ring-[#ae7796] outline-none"
         />
       </motion.div>
 
@@ -168,11 +185,11 @@ export default function SubmissionForm({
         <button
           type="submit"
           disabled={isSubmitting}
-          className={`px-4 py-2 text-white rounded ${
-            isSubmitting ? "bg-gray-400" : "bg-[#B4869F] hover:bg-[#ae7796]"
+          className={`cursor-pointer px-4 py-2 text-white bg-[#ae7796]  rounded ${
+            isSubmitting ? "bg-gray-400" : "bg-[#F2E9E4]   hover:bg-[#8a5272]"
           }`}
         >
-          {isSubmitting ? "Submitting..." : "Submit Post"}
+          {isSubmitting ? "Flying..." : "Create"}
         </button>
       </motion.div>
     </motion.form>
