@@ -79,12 +79,12 @@ const Page = ({ blok }: any) => {
               {/* Browse Button */}
               {blok.button?.cached_url && (
                 <div className="mt-6 flex justify-center w-full">
-                  <Link
+                  <a
                     href={`/${blok.button.cached_url}`}
                     className="px-6 py-2.5  text-[#96627f] rounded-lg bg-[#F1DEDE] hover:bg-[#d5adad]  transition-colors shadow-sm hover:shadow-md font-medium"
                   >
                     Browse
-                  </Link>
+                  </a>
                 </div>
               )}
             </>

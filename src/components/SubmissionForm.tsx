@@ -30,10 +30,12 @@ export default function SubmissionForm({
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+  const [imageFileName, setImageFileName] = useState<string | null>(null);
 
   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+      setImageFileName(file.name);
 
       if (file.size > 3 * 1024 * 1024) {
         toast.error("Image size must be less than 3MB");
@@ -146,6 +148,11 @@ export default function SubmissionForm({
         <span className="block mb-1 font-normal text-[#ae7796] font-mono">
           Photo <small> (max 3MB, optional)</small>
         </span>
+        {imageFileName && (
+          <p className="mb-2 text-sm text-[#c59ab0] italic">
+            Uploaded: {imageFileName}
+          </p>
+        )}
         <div className="w-full">
           <label
             htmlFor="image"
