@@ -1,5 +1,9 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import Lottie from "lottie-react";
+import Flyer from "@/utils/flyer";
 
 const Page = ({ blok }: any) => {
   const detailsBlocks = blok.body?.filter(
@@ -8,26 +12,17 @@ const Page = ({ blok }: any) => {
 
   return (
     <main className="max-w-6xl mx-auto px-4 py-6">
-      <h1 className="text-3xl font-semibold mb-8 text-center font-playfair">
-        Flyerblok
+      <h1 className="text-3xl text-[#F2E9E4] font-semibold mb-8 text-center font-playfair">
+        <em>Flyerblok</em>
       </h1>
+      <div className="flex justify-center items-center">
+        <Lottie animationData={Flyer} style={{ width: 300, height: 300 }} />
+      </div>
       {blok.body?.map((block: any) => (
         <section key={block._uid} className="mb-12 last:mb-0">
-          {block.image?.filename && (
-            <div className="flex justify-center mb-8">
-              <div className="w-100 h-100 overflow-hidden rounded-md">
-                <img
-                  src={block.image.filename}
-                  alt={block.headline || "Section image"}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-          )}
-
           {block.headline && (
-            <h2 className="text-xl font-normal mb-8 text-center">
-              {block.headline}
+            <h2 className="text-xl font-normal mb-8 text-center text-[#F2E9E4]">
+              <em>{block.headline}</em>
             </h2>
           )}
           {block.component === "Hero" && (
@@ -83,7 +78,7 @@ const Page = ({ blok }: any) => {
                 <div className="mt-6 flex justify-center w-full">
                   <Link
                     href={`/${blok.button.cached_url}`}
-                    className="px-6 py-2.5  text-black rounded-lg bg-[#F1DEDE] hover:bg-[#d5adad]  transition-colors shadow-sm hover:shadow-md font-medium"
+                    className="px-6 py-2.5  text-[#96627f] rounded-lg bg-[#F1DEDE] hover:bg-[#d5adad]  transition-colors shadow-sm hover:shadow-md font-medium"
                   >
                     Browse
                   </Link>

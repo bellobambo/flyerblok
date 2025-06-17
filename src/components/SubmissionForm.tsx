@@ -2,6 +2,7 @@
 
 import { useState, ChangeEvent, FormEvent } from "react";
 import { toast } from "react-hot-toast";
+import { motion } from "framer-motion";
 
 interface FormData {
   title: string;
@@ -34,7 +35,6 @@ export default function SubmissionForm({
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
 
-      // Client-side validation
       if (file.size > 3 * 1024 * 1024) {
         toast.error("Image size must be less than 3MB");
         return;
@@ -43,7 +43,6 @@ export default function SubmissionForm({
       setFormData((prev) => ({ ...prev, image: file }));
       toast.success("Image selected");
     } else {
-      // Clear the image if the user removes the selection
       setFormData((prev) => ({ ...prev, image: null }));
     }
   };
@@ -91,9 +90,23 @@ export default function SubmissionForm({
     }
   };
 
+  const itemVariant = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.1, duration: 0.4 },
+    }),
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
+    <motion.form
+      onSubmit={handleSubmit}
+      className="space-y-4"
+      initial="hidden"
+      animate="visible"
+    >
+      <motion.div custom={0} variants={itemVariant}>
         <label htmlFor="title" className="block mb-1 font-medium">
           Title
         </label>
@@ -106,9 +119,9 @@ export default function SubmissionForm({
           required
           className="w-full p-2 border rounded"
         />
-      </div>
+      </motion.div>
 
-      <div>
+      <motion.div custom={1} variants={itemVariant}>
         <label htmlFor="description" className="block mb-1 font-medium">
           Description
         </label>
@@ -121,9 +134,9 @@ export default function SubmissionForm({
           className="w-full p-2 border rounded"
           rows={4}
         />
-      </div>
+      </motion.div>
 
-      <div>
+      <motion.div custom={2} variants={itemVariant}>
         <label htmlFor="image" className="block mb-1 font-medium">
           Featured Image (max 3MB, optional)
         </label>
@@ -134,9 +147,9 @@ export default function SubmissionForm({
           onChange={handleImageUpload}
           className="w-full p-2 border rounded"
         />
-      </div>
+      </motion.div>
 
-      <div>
+      <motion.div custom={3} variants={itemVariant}>
         <label htmlFor="author" className="block mb-1 font-medium">
           Author
         </label>
@@ -149,17 +162,19 @@ export default function SubmissionForm({
           required
           className="w-full p-2 border rounded"
         />
-      </div>
+      </motion.div>
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className={`px-4 py-2 text-white rounded ${
-          isSubmitting ? "bg-gray-400" : "bg-[#B4869F] hover:bg-[#ae7796]"
-        }`}
-      >
-        {isSubmitting ? "Submitting..." : "Submit Post"}
-      </button>
-    </form>
+      <motion.div custom={4} variants={itemVariant}>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className={`px-4 py-2 text-white rounded ${
+            isSubmitting ? "bg-gray-400" : "bg-[#B4869F] hover:bg-[#ae7796]"
+          }`}
+        >
+          {isSubmitting ? "Submitting..." : "Submit Post"}
+        </button>
+      </motion.div>
+    </motion.form>
   );
 }
