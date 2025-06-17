@@ -9,10 +9,23 @@ const Nav = () => {
 
   return (
     <>
-      <nav className="flex justify-between items-center p-4 bg-[#F2E9E4]">
-        <Link href={"/"}>Home</Link>
-        <Link href={"/blog"}>Blogs</Link>
-        <button className="cursor-pointer" onClick={() => setShowModal(true)}>
+      <nav className="sticky top-0 z-50 flex justify-between items-center p-4 bg-[#F2E9E4] text-[#96627f] shadow-md">
+        <Link
+          href={"/"}
+          className="p-1 rounded-md hover:p-2 hover:bg-[#96627f] hover:text-[#F2E9E4] transition-all duration-200"
+        >
+          Home
+        </Link>
+        <Link
+          href={"/blog"}
+          className="p-1 rounded-md hover:p-2 hover:bg-[#96627f] hover:text-[#F2E9E4] transition-all duration-200"
+        >
+          Blogs
+        </Link>
+        <button
+          className="p-1 rounded-md hover:p-2 hover:bg-[#96627f] hover:text-[#F2E9E4] transition-all duration-200 cursor-pointer"
+          onClick={() => setShowModal(true)}
+        >
           Create
         </button>
       </nav>

@@ -8,7 +8,9 @@ const Page = ({ blok }: any) => {
 
   return (
     <main className="max-w-6xl mx-auto px-4 py-6">
-      <h1 className="text-3xl font-bold mb-8 text-center">Flyerblok</h1>
+      <h1 className="text-3xl font-semibold mb-8 text-center font-playfair">
+        Flyerblok
+      </h1>
       {blok.body?.map((block: any) => (
         <section key={block._uid} className="mb-12 last:mb-0">
           {block.image?.filename && (
@@ -24,9 +26,9 @@ const Page = ({ blok }: any) => {
           )}
 
           {block.headline && (
-            <h1 className="text-3xl font-bold mb-8 text-center">
+            <h2 className="text-xl font-normal mb-8 text-center">
               {block.headline}
-            </h1>
+            </h2>
           )}
           {block.component === "Hero" && (
             <>
@@ -60,7 +62,7 @@ const Page = ({ blok }: any) => {
                               {/* Text Content */}
                               <div className="p-5 text-center flex flex-col flex-grow">
                                 <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                                  {detailBlock.title || "Category Title"}
+                                  {/* {detailBlock.title || "Category Title"} */}
                                 </h3>
                                 <p className="text-gray-500 text-sm mb-4">
                                   {detailBlock.details ||
@@ -83,7 +85,7 @@ const Page = ({ blok }: any) => {
                     href={`/${blok.button.cached_url}`}
                     className="px-6 py-2.5  text-black rounded-lg bg-[#F1DEDE] hover:bg-[#d5adad]  transition-colors shadow-sm hover:shadow-md font-medium"
                   >
-                    Browse All
+                    Browse
                   </Link>
                 </div>
               )}
