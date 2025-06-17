@@ -47,11 +47,14 @@ const Page = ({ blok }: any) => {
                                 className="w-full"
                                 style={{ height: "200px", overflow: "hidden" }}
                               >
-                                <img
-                                  src={detailBlock.icon.filename}
-                                  alt={detailBlock.details || "Section image"}
-                                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                                />
+                                {detailBlock.icon?.filename && (
+                                  <img
+                                    src={`${detailBlock.icon.filename}/m/298x200/filters:quality(70)`}
+                                    alt={detailBlock.details || "Section image"}
+                                    className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+                                    loading="lazy"
+                                  />
+                                )}
                               </div>
 
                               {/* Text Content */}

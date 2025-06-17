@@ -24,9 +24,10 @@ const Blog = ({ blok, createdAt }: any) => {
       >
         {image?.filename && (
           <img
-            src={image.filename}
+            src={`${image.filename}/m/640x480/filters:quality(70)`}
             alt={image.alt || title}
             className="w-full h-auto rounded-lg "
+            loading="lazy"
           />
         )}
         <div className="flex justify-end items-end flex-col p-2">
