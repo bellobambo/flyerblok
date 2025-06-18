@@ -4,7 +4,7 @@ import Blog from "@/components/Blog";
 const fetchBlogPage = async (slug: string) => {
   const client = getStoryblokApi();
   const response = await client.getStory(`blog/${slug}`, {
-    version: "draft",
+    version: "published",
   });
   return response.data.story;
 };
