@@ -21,7 +21,7 @@ const Nav = () => {
           href={"/blog"}
           className="p-1 rounded-md hover:p-2 hover:bg-[#96627f] hover:text-[#F2E9E4] transition-all duration-200"
         >
-          Blogs
+          flyers
         </a>
         <button
           className="p-1 rounded-md hover:p-2 hover:bg-[#96627f] hover:text-[#F2E9E4] transition-all duration-200 cursor-pointer"

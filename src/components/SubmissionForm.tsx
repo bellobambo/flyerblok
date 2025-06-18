@@ -35,6 +35,7 @@ export default function SubmissionForm({
   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+      // console.log("file details", file);
       setImageFileName(file.name);
 
       if (file.size > 3 * 1024 * 1024) {
