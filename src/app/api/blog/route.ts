@@ -106,11 +106,19 @@ export async function POST(request: Request) {
     const fileUrl = `https://a.storyblok.com/${signedRequest.fields.key}`;
     // console.log("File uploaded successfully:", fileUrl);
 
+    const slug = title
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^\w\-]+/g, "")
+      .replace(/\-\-+/g, "-")
+      .replace(/^-+/, "")
+      .replace(/-+$/, "");
+
     // Create the story in Storyblok
     const storyData = {
       story: {
         name: title,
-        slug: title.toLowerCase().replace(/\s+/g, "-"),
+        slug: slug,
         parent_id: 687846830,
         content: {
           component: "blog",
