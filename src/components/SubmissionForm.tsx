@@ -76,8 +76,11 @@ export default function SubmissionForm({
         throw new Error(data.error || "Submission failed");
       }
 
-      toast.success("✓ Flyer posted! Changes may take a moment to reflect...");
+      toast.success("✓ Flyer posted! flyer may take a few mins to reflect...");
+        setTimeout(() => {
       toast.success("Flyer in review by Admin");
+
+      }, 1000);
       setFormData({
         title: "",
         description: "",
@@ -89,7 +92,7 @@ export default function SubmissionForm({
 
       setTimeout(() => {
         window.location.href = "/blog";
-      }, 1500);
+      }, 2500);
     } catch (error: any) {
       console.error("Error submitting form:", error);
       toast.error(error.message || "Failed to create blog post");
