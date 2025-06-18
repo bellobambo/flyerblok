@@ -13,7 +13,7 @@ const fetchHomePage = async () => {
 
 const Page = async (props: any) => {
   const blok = await fetchHomePage();
-  console.log("fetched blok", blok);
+  // console.log("fetched blok", blok);
 
   return <StoryblokStory story={blok} />;
 };

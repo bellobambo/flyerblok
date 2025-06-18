@@ -45,7 +45,7 @@ export async function POST(request: Request) {
       );
     }
 
-    console.log("Signing asset upload request...");
+    // console.log("Signing asset upload request...");
     const signResponse = await axios.post(
       `https://api.storyblok.com/v1/spaces/${spaceId}/assets`,
       {
@@ -63,7 +63,7 @@ export async function POST(request: Request) {
 
     const signedRequest = signResponse.data;
 
-    console.log("Uploading file to signed URL...");
+    // console.log("Uploading file to signed URL...");
     const uploadForm = new FormData();
 
     // Add all fields from the signed request
@@ -104,7 +104,7 @@ export async function POST(request: Request) {
     }
 
     const fileUrl = `https://a.storyblok.com/${signedRequest.fields.key}`;
-    console.log("File uploaded successfully:", fileUrl);
+    // console.log("File uploaded successfully:", fileUrl);
 
     // Create the story in Storyblok
     const storyData = {
@@ -145,7 +145,7 @@ export async function POST(request: Request) {
       },
     };
 
-    console.log("Creating story in Storyblok...");
+    // console.log("Creating story in Storyblok...");
     const storyResponse = await axios.post(
       `https://mapi.storyblok.com/v1/spaces/${spaceId}/stories/`,
       storyData,

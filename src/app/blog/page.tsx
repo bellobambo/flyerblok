@@ -1,3 +1,4 @@
+export const revalidate = 30;
 export const dynamic = "force-dynamic";
 
 import React from "react";
@@ -7,15 +8,14 @@ const fetchAllBlogs = async () => {
   const client = getStoryblokApi();
   const response = await client.getStories({
     content_type: "blog",
-    version: "draft",
+    version: process.env.NODE_ENV === "development" ? "draft" : "published",
   });
   return response.data.stories;
 };
 
 const BlogPage = async () => {
-  // const blok = await fetchBlogsPage();
   const blogs = await fetchAllBlogs();
-  // console.log("All Blogs Data:", blogs);
+  console.log("All Blogs Data:", blogs);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -34,9 +34,10 @@ const BlogPage = async () => {
                 {/* Blog Image */}
                 {blog.content?.image?.filename && (
                   <img
-                    src={blog.content.image.filename}
+                    src={`${blog.content.image.filename}/m/398x192/filters:quality(75)`}
                     alt={blog.content.image.alt || blog.name}
                     className="w-full h-48 object-cover"
+                    loading="lazy"
                   />
                 )}
 
