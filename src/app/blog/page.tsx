@@ -8,7 +8,7 @@ const fetchAllBlogs = async () => {
   const client = getStoryblokApi();
   const response = await client.getStories({
     content_type: "blog",
-    version: process.env.NODE_ENV === "development" ? "draft" : "published",
+    version: "published",
   });
   return response.data.stories;
 };
