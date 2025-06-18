@@ -12,6 +12,7 @@ import Blog from "@/components/Blog";
 import Page from "@/components/Page";
 import BackButton from "@/utils/back";
 import Nav from "@/components/Nav";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -83,6 +84,7 @@ export default function RootLayout({
             overflowX: "hidden",
           }}
         >
+          <Toaster />
           <header
             style={{
               position: "sticky",

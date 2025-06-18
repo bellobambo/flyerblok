@@ -85,6 +85,10 @@ export default function SubmissionForm({
       });
 
       if (onSuccess) onSuccess();
+
+      setTimeout(() => {
+        window.location.href = "/blog";
+      }, 1500);
     } catch (error: any) {
       console.error("Error submitting form:", error);
       toast.error(error.message || "Failed to create blog post");
