@@ -76,7 +76,8 @@ export default function SubmissionForm({
         throw new Error(data.error || "Submission failed");
       }
 
-      toast.success("Blog post created successfully!");
+      toast.success("✓ Flyer posted! Changes may take a moment to reflect...");
+      toast.success("Check back in a few");
       setFormData({
         title: "",
         description: "",
