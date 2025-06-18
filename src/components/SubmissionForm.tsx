@@ -77,7 +77,7 @@ export default function SubmissionForm({
       }
 
       toast.success("✓ Flyer posted! Changes may take a moment to reflect...");
-      toast.success("Check back in a few");
+      toast.success("Flyer in review by Admin");
       setFormData({
         title: "",
         description: "",
